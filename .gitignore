@@ -1,7 +1,12 @@
 .bsp
+.bloop
+.idea
 .dotty-ide-artifact
 .dotty-ide.json
 .vscode/
 target/
 project/project
+project/.bloop
 project/target
+repositories
+.metals

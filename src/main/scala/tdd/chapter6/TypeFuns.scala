@@ -28,11 +28,11 @@ trait StringOrIntType {
     val result:StringOrInt
 }
 //part 2 which is the actual dependent type
-type StringOrIntDT = (b:StringOrIntType) => b.StringOrInt
+type StringOrIntDFT = (b:StringOrIntType) => b.StringOrInt
 
 //same for the getStringOrInt is divided into 2 parts
 //part one is using the depedent type in a function
-def getStringOrInt:StringOrIntDT = b => b.result
+def getStringOrInt:StringOrIntDFT = b => b.result
 //part two is the implementations of the trait from part one which are the inputs for the function
 object forFalse extends StringOrIntType:
     type B = false
@@ -51,9 +51,9 @@ object forTrue extends StringOrIntType:
  * 
  */
 //I this case we might want to write a new dependent type function
-type StringOrIntDT2 = (b:StringOrIntType) => String
+type StringOrIntDFT2 = (b:StringOrIntType) => b.StringOrInt => String
 //well the implementation in scala is quite easy as we have toString :-)
-def valToString:StringOrIntDT2 = dt => dt.result.toString
+def valToString:StringOrIntDFT2 = dt => result => result.toString
 
 @main def typeFuns = 
     getStringOrInt(forFalse).tap(println)

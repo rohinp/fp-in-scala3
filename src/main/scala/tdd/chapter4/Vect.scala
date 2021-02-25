@@ -19,6 +19,16 @@ object VectOps:
     case VNil => None
     case VCons(h,_) => Some(h)
 
+  extension [E, M <: Int](x: E) def ::(xs: Vect[E,M]):Vect[E, S[M]] = xs match {
+    case VNil => pure(x)
+    case _ => VCons(x, xs)
+  }
+
+  def cons[E, M <: Int](x: E, xs: Vect[E,M]): Vect[E, S[M]]  = xs match {
+    case VNil => pure[E](x)
+    case _ => VCons[E, M](x, xs)
+  }
+
   extension [E, M <: Int, N <: Int](xs: Vect[E,M]) def ++(ys: Vect[E,N]):Vect[E, M + N] = xs match {
     case VNil => ys.asInstanceOf[Vect[E, M + N]]
     case VCons(x, xs) => VCons(x, xs ++ ys).asInstanceOf[Vect[E, M + N]]
@@ -66,4 +76,5 @@ object VectOps:
     x <- vect2
     y <- vect1
   } yield (x , y)).tap(println)
-
+  //using the consoperator of Vect
+  (1 :: (2 :: VNil)).tap(println)

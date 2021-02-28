@@ -5,6 +5,7 @@ import cats.kernel._
 import cats.implicits._
 import scala.compiletime.S
 import scala.compiletime.ops.int._
+import scala.compiletime.ops.boolean._
 
 enum Vect[+E, L]:
   case VNil extends Vect[Nothing, 0]
@@ -51,10 +52,10 @@ object VectOps:
   trait VectIndex {
     type Data
     type Index <: Int
-    type Length
+    type Length <: Int
     val index:Index
     val vect:Vect[Data, Length]
-    type ValidIndexProof = (0 <= Index <= Length) match {
+    type ValidIndexProof =  (Index >= 0) && (Index <= Length)match {
       case true => true =:= true
       case _ => Unit
     }

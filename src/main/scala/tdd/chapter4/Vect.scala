@@ -24,11 +24,6 @@ object VectOps:
     case _ => VCons(x, xs)
   }
 
-  def cons[E, M <: Int](x: E, xs: Vect[E,M]): Vect[E, S[M]]  = xs match {
-    case VNil => pure[E](x)
-    case _ => VCons[E, M](x, xs)
-  }
-
   extension [E, M <: Int, N <: Int](xs: Vect[E,M]) def ++(ys: Vect[E,N]):Vect[E, M + N] = xs match {
     case VNil => ys.asInstanceOf[Vect[E, M + N]]
     case VCons(x, xs) => VCons(x, xs ++ ys).asInstanceOf[Vect[E, M + N]]
@@ -45,12 +40,33 @@ object VectOps:
     case (VCons(x, xs), VCons(y, ys)) => VCons((x,y), zip(xs, ys))
     case (VNil, VNil) => VNil
   }
-  /**
-   * Pending Fin type
-   * def index[A, L <: Int, N <: Int](i:N, v:Vect[A, L])(using S[N] <= L =:= true):A = ???
-  */
 
+  //scala type system is not able to prove that 1 + length(tail) is a L type which is in turn <: Int
+  //This is the reason we need an asInstanceOf to make it compile
+  //It's not big of an issue but will check for a better solution for sure, so it's WIP
+  def length[L <: Int](v: Vect[_,L]):L = v match
+    case VNil => 0
+    case VCons(_, tail) => (1 + length(tail)).asInstanceOf[L]
+    
+  trait VectIndex {
+    type Data
+    type Index <: Int
+    type Length
+    val index:Index
+    val vect:Vect[Data, Length]
+    type ValidIndexProof = (0 <= Index <= Length) match {
+      case true => true =:= true
+      case _ => Unit
+    }
+  }
   
+  def index(vi:VectIndex)(using vi.ValidIndexProof):vi.Data = 
+    def loop[L](i:Int, items:Vect[vi.Data,L]): vi.Data = items match 
+      case VCons(data, tail) if i == 0 => data
+      case VCons(_, tail) => loop(i - 1, tail)
+      case _ => loop(i, items) //this will never happen
+    loop(vi.index, vi.vect)
+
 @main def vectUsage =
   import VectOps._
   import Vect._
@@ -78,3 +94,11 @@ object VectOps:
   } yield (x , y)).tap(println)
   //using the consoperator of Vect
   (1 :: (2 :: VNil)).tap(println)
+  //compile check index function
+  index(new VectIndex{
+    type Data = String
+    type Index = 1
+    type Length = 3
+    val  index = compiletime.constValue[Index]
+    val vect = VCons("1", VCons("2", VCons("3", VNil)))
+  }).tap(println)

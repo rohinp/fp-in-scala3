@@ -48,6 +48,10 @@ object VectOps:
   def length[L <: Int](v: Vect[_,L]):L = v match
     case VNil => 0
     case VCons(_, tail) => (1 + length(tail)).asInstanceOf[L]
+
+/*   type Length[V] <: Int = V match 
+    case VNil.type => 0
+    case VCons.type => 1 + Length[tail.type] */
     
   trait VectIndex {
     type Data
@@ -57,7 +61,7 @@ object VectOps:
     val vect:Vect[Data, Length]
     type ValidIndexProof =  (Index >= 0) && (Index <= Length)match {
       case true => true =:= true
-      case _ => Unit
+      case _ => false =:= true
     }
   }
   

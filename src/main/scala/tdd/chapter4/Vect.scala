@@ -1,9 +1,7 @@
 package tdd.chapter4
 
 import scala.util.chaining._
-import cats.kernel._
-import cats.implicits._
-import scala.compiletime.S
+import scala.compiletime.ops.int.S
 import scala.compiletime.ops.int._
 import scala.compiletime.ops.boolean._
 

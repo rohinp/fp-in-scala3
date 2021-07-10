@@ -47,7 +47,6 @@ object Prelude:
    * scala> :t the(new The{type T = Char})
    * Char => Char
    * */
-  
-  
+    
 
     

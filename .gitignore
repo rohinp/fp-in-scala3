@@ -10,3 +10,5 @@ project/.bloop
 project/target
 repositories
 .metals
+*.class
+*.tasty

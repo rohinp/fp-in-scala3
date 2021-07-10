@@ -46,10 +46,10 @@ def wheels_v1:Wheel_DTF = vt => vt.resultValue match {
 }
 
 //v2 directly using dependent data type
-def wheels_v2(v:Vehicle[PowerSource]): Int = v match 
+def wheels_v2(v:Vehicle[PowerSource]): Int = ??? /* v match 
     case Vehicle.Bicycle => 2
     case Vehicle.Car(_) => 4
-    case Vehicle.Bus(_) => 4
+    case Vehicle.Bus(_) => 4 */
 
 /**
  * refuel : Vehicle Petrol -> Vehicle Petrol

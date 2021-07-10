@@ -13,8 +13,8 @@ package tdd.chapter4
  *                                      GT => Node left val (insert x right)
  * 
   */
-import cats._
-import cats.implicits._
+/* import cats._
+import cats.implicits._ */
 
 enum Tree[+E]:
     case Empty
@@ -22,12 +22,12 @@ enum Tree[+E]:
 
 import Tree._
 
-def insert[E:Order](elem:E, tree:Tree[E]): Tree[E] = 
+/* def insert[E:Order](elem:E, tree:Tree[E]): Tree[E] = 
     (elem, tree) match
         case (e, Empty) => Node(Empty, e, Empty)
         case (e, Node(l, d, r)) if e < d => Node(insert(e,l), d, r)
         case (e, Node(l, d, r)) if e > d => Node(l, d, insert(e,r))
-        case (_, n@Node(_, _, _))  => n
+        case (_, n@Node(_, _, _))  => n */
 
 
 /**
@@ -45,12 +45,12 @@ def insert[E:Order](elem:E, tree:Tree[E]): Tree[E] =
  *                                          GT => Node left val (insert x right)
   */
 
-type BSTree[T] = Order[T] ?=> Tree[T]
+type BSTree[T] = Ordering[T] ?=> Tree[T]
 
-def insert_bs[E](elem:E, tree:BSTree[E]): BSTree[E] = 
-    (elem, tree) match
+def insert_bs[E](elem:E, tree:BSTree[E]): BSTree[E] = ???
+/*     (elem, tree) match
         case (e, Empty) => Node(Empty, e, Empty)
         case (e, Node(l, d, r)) if e < d => Node(insert_bs(e,l), d, r)
         case (e, Node(l, d, r)) if e > d => Node(l, d, insert_bs(e,r))
-        case (_, n@Node(_, _, _))  => n
+        case (_, n@Node(_, _, _))  => n */
         

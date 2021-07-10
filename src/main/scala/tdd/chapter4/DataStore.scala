@@ -7,7 +7,6 @@ import scala.compiletime._
 import scala.compiletime.testing._
 import util.chaining.scalaUtilChainingOps
 
-import cats.implicits._
 
 /**
  * data DataStore : Type where
@@ -77,10 +76,10 @@ enum Command:
 */
 def parseCommand(cmd:String, input:String): Option[Command] = 
     (cmd, input) match 
-        case ("add", str) => Command.Add(str).some
+        case ("add", str) => Some(Command.Add(str))
         case ("get", value) => value.toIntOption.map(Command.Get(_))
-        case ("quit", "") => Command.Quit.some
-        case ( _ , _ ) => none[Command]
+        case ("quit", "") => Some(Command.Quit)
+        case ( _ , _ ) => None
 
 /**
  * parse : (input : String) -> Maybe Command
@@ -108,10 +107,10 @@ def getEntry(pos:Int, store: DataStore) : Option[(String, DataStore)] = ???
  *                              Just Quit => Nothing
  */
  def processInput(store:DataStore, input:String): Option[(String, DataStore)] =
-    parse(input).fold(("Invalid command\n", store).some){
-        case Command.Add(item) => (s"ID ${size(store)} \n", addToStore(store, item)).some
+    parse(input).fold(Some(("Invalid command\n", store))){
+        case Command.Add(item) => Some((s"ID ${size(store)} \n", addToStore(store, item)))
         case Command.Get(pos) => ???
-        case Command.Quit => none
+        case Command.Quit => None
     }
 
 
